@@ -1,0 +1,13 @@
+server : 
+  port : 8000
+
+db:
+  type: 'mysql'
+  port: 3306
+  database: "evastick_db"
+
+jwt:
+  expriesIn: 60 * 60
+
+
+  
