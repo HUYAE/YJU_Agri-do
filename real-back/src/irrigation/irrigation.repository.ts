@@ -11,15 +11,15 @@ export class IrrigationRepository extends Repository<Irrigation>{
     }
     async createButton(createbuttonDto:CreateButtonDto, user:{[key : string]:any}): Promise<Irrigation>{
         const user1 = await User.findOneBy({id : user['sub']});
-        const {settime,linename,onoff} = createbuttonDto;
+        const {settime,linename,onoff,day} = createbuttonDto;
 
         const button = this.create({
             settime,
             linename,
             onoff,
+            day,
             user : user1
         })
-        console.log(user);
         await this.save(button);
         return button;
     }

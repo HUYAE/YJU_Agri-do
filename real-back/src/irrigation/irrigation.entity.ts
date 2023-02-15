@@ -21,6 +21,9 @@ export class Irrigation extends BaseEntity {
     @CreateDateColumn()
     start_time : Date;
 
+    @Column()
+    day : number;
+
     @ManyToOne(type=>User, user=>user.irrigations,{eager : false})
     user: User;
 }

@@ -11,4 +11,7 @@ export class CreateButtonDto {
     @IsNotEmpty()
     onoff : Boolean;
 
+    @IsNotEmpty()
+    day : number;
+
 }

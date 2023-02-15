@@ -19,7 +19,6 @@ export class IrrigationService {
         const query = this.irrigationRepository.createQueryBuilder('irrigation');
         query.where('irrigation.userId = :userId',{userId : user['sub']});
         const buttons = await query.getMany();
-        console.log(user['sub']);
         return buttons;
     }
 
