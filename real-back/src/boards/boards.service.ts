@@ -32,12 +32,18 @@ export class BoardsService {
         return this.boardRepository.createBoard(createBoardDto, user);
     }
 
-    async deleteBoard(id : number, user : User) : Promise<void>  {
-        const result = await this.boardRepository.delete({id,user}); //delete 직접 들어가서 user인수 추가
-        if(result.affected == 0){
-            throw new NotFoundException(`Can't find Board with id ${id} && ${user}`);
-        }
+    // async deleteBoard(id : number, user:{[key:string]:any}) : Promise<void>  {
+    //     const result = await this.boardRepository.delete({id,user}); //delete 직접 들어가서 user인수 추가
+    //     if(result.affected == 0){
+    //         throw new NotFoundException(`Can't find Board with id ${id} && ${user}`);
+    //     }
         
+    //     console.log('result',result);
+    // } 해당 유저만 삭제가능하게.
+
+    async deleteBoard2(id:number):Promise<void>{
+        const result = await this.boardRepository.delete(id);
+
         console.log('result',result);
     }
 

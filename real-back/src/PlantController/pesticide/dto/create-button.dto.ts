@@ -1,7 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateButtonDto {
-
+export class CreatePesticideDto {
+    
     @IsNotEmpty()
     settime:number;
 
@@ -12,6 +12,5 @@ export class CreateButtonDto {
     onoff : Boolean;
 
     @IsNotEmpty()
-    day : number;
-
+    day:number;
 }

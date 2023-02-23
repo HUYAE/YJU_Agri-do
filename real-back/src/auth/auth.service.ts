@@ -43,6 +43,9 @@ export class AuthService {
         return this.jwtService.decode(jwt)
       }
 
+      async getAllUsers(user:{[key:string]:any}):Promise<User>{
+        return this.userRepository.findName(user);
+      }
 
       async getTokens(userId: number, username: string) {
         const [accessToken, refreshToken] = await Promise.all([
@@ -90,11 +93,12 @@ export class AuthService {
         return this.userRepository.createUser(authCredentialsDto);
     }
 
+
     async signIn(authCredentialsDto:AuthCredentialsDto,res : Response) {
-        const { username, password } = authCredentialsDto;
+        const { username/*, password*/ } = authCredentialsDto;
         const user = await this.userRepository.findOneBy({ username });
 
-        if(user && (await bcrypt.compare(password, user.password))){
+        if(user /*&& (await bcrypt.compare(password, user.password))*/){
             // 유저 토큰 생성 ( Secret + Payload )
             const {accessToken, refreshToken} = await this.getTokens(user.id,username)
             res.cookie('refreshToken',refreshToken,{
@@ -106,6 +110,9 @@ export class AuthService {
         }else{
             throw new UnauthorizedException('login failed')
         }
+    }
+    async deleteUser(id : number):Promise<void>{
+      await this.userRepository.delete(id);
     }
 
 

@@ -38,11 +38,16 @@ export class BoardsController {
         return this.boardsService.getBoardById(id);
     }
 
+    // @Delete('/:id')
+    // deleteBoard(@Param('id', ParseIntPipe) id,
+    // @Req() req : Request
+    // ): Promise<void> {
+    //     return this.boardsService.deleteBoard(id, req.user);
+    // } 해당 유저만 삭제 가능하게.
+
     @Delete('/:id')
-    deleteBoard(@Param('id', ParseIntPipe) id,
-    @GetUser() user:User
-    ): Promise<void> {
-        return this.boardsService.deleteBoard(id, user);
+    deleteBoard(@Param('id',ParseIntPipe)id:number):Promise<void> {
+        return this.boardsService.deleteBoard2(id);
     }
 
     @Patch('/:id/status')

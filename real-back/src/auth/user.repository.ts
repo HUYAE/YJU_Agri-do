@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AuthCredentialsDto } from './dto/auth-credential.dto';
 import { Repository, DataSource } from 'typeorm';
 import { User } from './user.entity';
@@ -15,16 +15,22 @@ export class UserRepository extends Repository<User>{
         super(User,dataSource.createEntityManager());
     }
 
+    async findName(user:{[key:string]:any}):Promise<User>{
+        const userName = await User.findOneBy({id:user['sub']});
+        return userName
+    }
+
     
     async createUser(authCredentialsDto : AuthCredentialsDto) : Promise<void> {
-        const { username, password, nickname } = authCredentialsDto;
+        const { username, nickname, phone_number } = authCredentialsDto;
         const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(password, salt);
+        // const hashedPassword = await bcrypt.hash(password, salt);
         
         const user = this.create({ 
             username,
-            password : hashedPassword,
+            //password : hashedPassword,
             nickname,
+            phone_number,
         });
 
         try {
@@ -38,4 +44,5 @@ export class UserRepository extends Repository<User>{
             }
         }
     }
+    //
 }

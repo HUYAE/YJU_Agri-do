@@ -1,7 +1,8 @@
+import { AccessTokenGuard } from 'src/auth/guard/accessToken.guard';
 import { GetUser } from './get-user.decorator';
 import { AuthCredentialsDto } from './dto/auth-credential.dto';
 import { AuthService } from './auth.service';
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, ParseUUIDPipe, Post, Query, Req, Res, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { HttpCode } from '@nestjs/common/decorators/http/http-code.decorator';
@@ -19,7 +20,7 @@ export class AuthController {
             return this.authService.signUp(authcredentialsDto);
     }
 
-    @Post('signin')
+    @Post('/signin')
     signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto, @Res({passthrough : true}) res : Response): Promise<{accessToken : string}>{
         return this.authService.signIn(authCredentialsDto,res);
 
@@ -35,16 +36,19 @@ export class AuthController {
     })
 }
 
-    @Get('refresh')
+    @Get('/refresh')
     refreshTokens(@Req() req: Request) {
       return this.authService.refreshTokens(req);
     }
 
-    @Get('/')
-    @UseGuards(AuthGuard())
-    authCheck(@GetUser() user: User){
-        console.log(user);
-        return user
+    @Get()
+    @UseGuards(AccessTokenGuard)
+    authCheck(@Req() req:Request):Promise<User>{
+        return this.authService.getAllUsers(req.user);
     }
-    
+
+    @Delete('/:id') //유저 삭제는 관리자 문의로
+    async deleteUser(@Param('id',ParseIntPipe) id: number) : Promise<void>{
+        await this.authService.deleteUser(id);
+    }
 }

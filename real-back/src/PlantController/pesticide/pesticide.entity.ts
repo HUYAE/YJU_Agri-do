@@ -1,8 +1,8 @@
-import {BaseEntity,PrimaryGeneratedColumn,Column, Entity, ManyToOne, CreateDateColumn} from "typeorm";
 import { User } from 'src/auth/user.entity';
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Irrigation extends BaseEntity { 
+export class PesticideEntity extends BaseEntity{
     @PrimaryGeneratedColumn()
     id:number;
 
@@ -24,6 +24,6 @@ export class Irrigation extends BaseEntity {
     @Column()
     day : number;
 
-    @ManyToOne(type=>User, user=>user.irrigations,{eager : false})
+    @ManyToOne(type=>User, user=>user.pesticides,{eager : false})
     user: User;
 }
