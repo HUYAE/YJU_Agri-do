@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model questions {
+  id       Int       @id @default(autoincrement())
+  question String
+  posts    answers[]
+}
+
+model answers {
+  id       Int        @id @default(autoincrement())
+  answer   String?
+  authorId Int?
+  author   questions? @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], map: "answers_authorId_fkey")
+}
